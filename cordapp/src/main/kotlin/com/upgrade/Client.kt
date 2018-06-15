@@ -54,6 +54,7 @@ private class UpgradeStateClient {
         }
 
         Thread.sleep(10000)
+        print( partyAProxy.vaultQuery(UpgradeState.NewState::class.java).states)
         partyAProxy.vaultQuery(UpgradeState.NewState::class.java).states.forEach { logger.info("{}", it.state) }
     }
 }
