@@ -7,12 +7,12 @@ import net.corda.core.utilities.loggerFor
 import org.slf4j.Logger
 
 fun main(args: Array<String>) {
-    UpgradeContractClient().main(args)
+    UpgradeStateClient().main(args)
 }
 
-private class UpgradeContractClient {
+private class UpgradeStateClient {
     companion object {
-        val logger: Logger = loggerFor<UpgradeContractClient>()
+        val logger: Logger = loggerFor<UpgradeStateClient>()
     }
 
     fun main(args: Array<String>) {
@@ -46,7 +46,6 @@ private class UpgradeContractClient {
         }
         Thread.sleep(5000)
 
-
         partyAProxy.vaultQuery(OldState::class.java).states.forEach { stateAndRef ->
             partyAProxy.startFlowDynamic(
                     ContractUpgradeFlow.Initiate::class.java,
@@ -54,11 +53,7 @@ private class UpgradeContractClient {
                     UpgradeState::class.java)
         }
 
-        // Give the node the time to run the contract upgrade flows.
         Thread.sleep(10000)
-
-
-        logger.info("The length is ",partyAProxy.vaultQuery(UpgradeState.NewState::class.java).states.size.toString())
         partyAProxy.vaultQuery(UpgradeState.NewState::class.java).states.forEach { logger.info("{}", it.state) }
     }
 }

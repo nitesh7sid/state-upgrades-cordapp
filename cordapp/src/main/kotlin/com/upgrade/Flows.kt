@@ -26,7 +26,6 @@ class Initiator(val counterparty: Party) : FlowLogic<Unit>() {
         txBuilder.verify(serviceHub)
 
         val partSignedTx = serviceHub.signInitialTransaction(txBuilder)
-
         val otherPartyFlow = initiateFlow(counterparty)
         val fullySignedTx = subFlow(CollectSignaturesFlow(partSignedTx, setOf(otherPartyFlow)))
 

@@ -1,25 +1,24 @@
 package com.upgrade
 
-import net.corda.core.contracts.ContractState
-import net.corda.core.contracts.TypeOnlyCommandData
-import net.corda.core.contracts.UpgradedContract
+import net.corda.core.contracts.*
 import net.corda.core.identity.AbstractParty
 import net.corda.core.transactions.LedgerTransaction
-import javax.enterprise.inject.New
 
 /**
  * Created by nitesh on 10-06-2018.
  */
 
-open class UpgradeState : UpgradedContract<OldState, UpgradeState.NewState> {
+open class UpgradeState : UpgradedContractWithLegacyConstraint<OldState, UpgradeState.NewState> {
 
-    override val legacyContract = Contract.id
+    override val legacyContract: ContractClassName = Contract.id
 
-    data class NewState(val a: AbstractParty) : ContractState {
-        override val participants get() = listOf(a)
+    override val legacyContractConstraint: AttachmentConstraint = AlwaysAcceptAttachmentConstraint
+
+    override fun upgrade(oldState: OldState) = UpgradeState.NewState(oldState.a, oldState.b, 0)
+
+    data class NewState(val a: AbstractParty, val b: AbstractParty, val value:Int ) : ContractState {
+        override val participants get() = listOf(a, b)
     }
-    // Again, we're not upgrading the state, so we leave the states unmodified.
-    override fun upgrade(oldState: OldState) = NewState(oldState.a)
 
     override fun verify(tx: LedgerTransaction) {}
 }
