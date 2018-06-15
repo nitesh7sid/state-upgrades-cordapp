@@ -54,7 +54,17 @@ private class UpgradeStateClient {
         }
 
         Thread.sleep(10000)
-        print( partyAProxy.vaultQuery(UpgradeState.NewState::class.java).states)
+
+        println("Old State in Party A's vault")
+        println( partyAProxy.vaultQuery(OldState::class.java).states )
+        println("Old State in Party B's vault")
+        println( partyBProxy.vaultQuery(OldState::class.java).states)
+
+        println("Upgraded State in Party A's vault")
+        println( partyAProxy.vaultQuery(UpgradeState.NewState::class.java).states )
+        println("Upgraded State in Party B's vault")
+        println( partyBProxy.vaultQuery(UpgradeState.NewState::class.java).states)
+
         partyAProxy.vaultQuery(UpgradeState.NewState::class.java).states.forEach { logger.info("{}", it.state) }
     }
 }
