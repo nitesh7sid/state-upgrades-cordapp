@@ -19,7 +19,7 @@ See https://docs.corda.net/tutorial-cordapp.html#running-the-example-cordapp.
 Run the following command from the project's root folder:
 
 * Unix/Mac OSX: `./gradlew runUpgradeStateClient`
-* Windows: `gradlew runUpgradeContractClient`
+* Windows: `gradlew runUpgradeStateClient`
 
 Afte upgrading the state, the client will fetch the new state from the vault and print the new upgraded state:
 ```
